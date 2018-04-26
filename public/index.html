@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Coap Demo</title>	
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+<style>
+ul#tabs-nav {
+   margin: 0;
+   padding: 0;
+   position: relative;
+   text-align: left;
+}
+ul#tabs-nav li {
+   list-style: none;
+   display: inline-block;
+}
+a.tab-menu {
+   display: block;
+   background-color: #1b91ab;
+   font-size: 24px;
+   font-family: Arial,Helvetica,sans-serif;
+   color: #fff;
+   padding: 5px 10px;
+   text-shadow: 1px 1px 0px #1b91ab;
+   font-weight: bold;
+   text-decoration: none;
+   border: solid 1px #1b91ab;
+   border-bottom: 0;
+   border-radius: 3px 3px 0 0;
+}
+a.tab-menu.tabs-active {
+   background-color: #fff;
+   text-shadow: 1px 1px 0px #ffffff;
+   border: solid 1px #1b91ab;
+   color: #6b6b6b;
+   border-bottom: 0;
+}
+.tabs-container {
+   border: solid 1px #1b91ab;
+   padding: 10px;
+   margin-top: -1px;
+   background-color: #fff;
+}
+.tabs-panel {
+   display: none;
+   min-height: 300px;
+   overflow: auto;
+   max-height: 500px;
+}
+
+</style>
+</head>
+<body>
+<div id="tabs">
+
+<div class="menu-div-top" data-tabs="tabs">
+ <ul id="tabs-nav">
+   <li><a href="#tab1" class="tab-menu tabs-active">Coap Server</a></li>
+   <li><a href="#tab2" class="tab-menu">Node</a></li>
+   <!--
+   <li><a href="#tab3" class="tab-menu">Node 101</a></li>
+   <li><a href="#tab4" class="tab-menu">Node 102</a></li>
+	--> 
+ </ul>
+  </div>
+
+<div class="tab-div">
+  <div class="tabs-container">
+   <div id="tab1" class="tabs-panel" style="display: block;">
+  	   
+	   <button style="width:200px;height:80px;background-color:#DDDDDD" onclick="buttonClicked()"><font size="5">Initialize Coap Server</font></button>
+	   <script src="/socket.io/socket.io.js"></script>
+		<script>
+			 var socket = io.connect();
+			 
+			 function buttonClicked(){
+			   socket.emit('clicked');
+			 }
+			
+			 socket.on('coap_server', function(data){			 
+				 document.getElementById("TextCoapServer").value += data; 
+			 });
+		</script>
+	
+	   <button style="width:200px;height:80px;background-color:#DDDDDD" onclick="buttonClickedPing()"><font size="5">Ping Coap Server</font></button> 
+	   <button style="width:200px;height:80px;background-color:#DDDDDD" onclick="buttonClickedClear()"><font size="5">Clear Message Box</font></button>   
+	   <button id="buttonCoapIP" style="width:150px;height:40px" onclick="buttonIP()">IP</button></p>
+
+	   <p></p>
+	  
+	  <p><button style="width:200px;height:80px;background-color:#DDDDDD" onclick="buttonPing100()"><font size="5">Ping Node 100</font></button> 
+	   <button style="width:200px;height:80px;background-color:#DDDDDD" onclick="buttonPing101()"><font size="5">Ping Node 101</font></button>
+	   <button style="width:200px;height:80px;background-color:#DDDDDD" onclick="buttonPing102()"><font size="5">Ping Node 102</font></button></p>
+	   <p><button style="width:200px;height:80px;background-color:#DDDDDD" onclick="buttonPing103()"><font size="5">Ping Node 103</font></button>
+	   <button style="width:200px;height:80px;background-color:#DDDDDD" onclick="buttonPing104()"><font size="5">Ping Node 104</font></button> 
+	   <button style="width:200px;height:80px;background-color:#DDDDDD" onclick="buttonPing105()"><font size="5">Ping Node 105</font></button>
+	   </p>
+	   
+	   <form><textarea style="font-size: 14pt" rows=14 cols=100 id=TextCoapServer value=""></textarea></form>
+	   <script src="/socket.io/socket.io.js"></script>
+	   <script>
+			 var socket = io.connect();
+			 
+			 function buttonClickedPing(){
+			   socket.emit('clickedPing');
+			 }
+			
+			function buttonPing100(){socket.emit('clickedPing100');}
+			function buttonPing101(){socket.emit('clickedPing101');}
+			function buttonPing102(){socket.emit('clickedPing102');}
+			function buttonPing103(){socket.emit('clickedPing103');}
+			function buttonPing104(){socket.emit('clickedPing104');}
+			function buttonPing105(){socket.emit('clickedPing105');}
+		
+			function buttonClickedClear(){document.getElementById("TextCoapServer").value = ""; }
+			
+			socket.on('coap_server_init', function(data){document.getElementById("TextCoapServer").value += data;});
+		    socket.on('node100ping', function(data){document.getElementById("TextCoapServer").value += data;});
+		    socket.on('node101ping', function(data){document.getElementById("TextCoapServer").value += data;});
+		    socket.on('node102ping', function(data){document.getElementById("TextCoapServer").value += data;});
+		    socket.on('node103ping', function(data){document.getElementById("TextCoapServer").value += data;});
+		    socket.on('node104ping', function(data){document.getElementById("TextCoapServer").value += data;});
+			socket.on('node105ping', function(data){document.getElementById("TextCoapServer").value += data;});
+	   </script>
+	  
+	</div>
+    
+	<div id="tab2" class="tabs-panel">
+		
+		<button id="buttonLED00"  style="width:200px;height:50px;background-color:#DDDDDD"; 
+			onclick="buttonLED()"><font size="5">LED</font></button>
+
+		<button style="width:200px;height:50px;background-color:#DDDDDD" onclick="buttonNodestatus()"><font size="5">Status</font></button>
+		<button style="width:200px;height:50px;background-color:#DDDDDD" onclick="buttonHelloworld()"><font size="5">HelloWorld</font></button>
+		<p></p>
+		<button style="width:240px;height:50px;background-color:#DDDDDD" onclick="buttonNodeClear()"><font size="5">Clear Message Box</font></button>
+		&nbsp;&nbsp; 
+		<font id="adcValue" color="blue" size="6"><b> ADC : 0 V</b></font>
+		&nbsp;&nbsp;&nbsp;
+		<font id="pwmDuty" color="blue" size="6"><b> PWM Duty : 0%</b></font>
+		<div></div>
+		<p></p>
+	    <script src="/socket.io/socket.io.js"></script>
+		<script>
+			
+			var socket = io.connect();
+			var flagLED = true;
+					
+			function buttonNodeClear(){document.getElementById("TextNode100").value = ""; }
+			
+			function buttonHelloworld(){
+				socket.emit('nodeHelloworld');
+			}
+			
+			function buttonIP(){
+				socket.emit('clickedip');
+				
+			}	
+			
+			socket.on('coapip', function(data){
+					//alert("ip: " + data);
+					document.getElementById("buttonCoapIP").innerText=data ;
+				}
+			);
+			
+			function buttonLED(){
+				
+				var x=document.getElementById("mySelect")
+ 				var d1 = x.options[x.selectedIndex].value;
+				//alert(d1);
+
+				if (flagLED == true){
+					socket.emit('LED_on', d1); // 發送資料
+					flagLED = false;		
+					//document.getElementById("buttonLED00").style.background='#00DD00';
+					
+				}else
+				{
+					socket.emit('LED_off', d1); // 發送資料	
+					flagLED = true;
+					//document.getElementById("buttonLED00").style.background='#DDDDDD';
+				}
+			}
+			
+			function buttonNodestatus(){
+				
+				var x1=document.getElementById("mySelect");
+ 				var d2 = x1.options[x1.selectedIndex].value;
+				//alert("status " + d2);
+				socket.emit('statusNode100',d2);	
+				
+			}	
+		
+		    socket.on('node1', function(data){
+				document.getElementById("TextNode100").value += data;
+				if( data.lastIndexOf("on") != -1){document.getElementById("buttonLED00").style.background='#00DD00';}
+				if( data.lastIndexOf("off") != -1){document.getElementById("buttonLED00").style.background='#DDDDDD';}
+				if(data.lastIndexOf("ADC") != -1){var pos = data.lastIndexOf("ADC");
+												  var str ="";pos+=5;
+												  str = data.charAt(pos);pos++;
+												  str += data.charAt(pos);pos++;
+												  str += data.charAt(pos);pos++;
+												  str += data.charAt(pos);
+												  // alert(str);
+												  document.getElementById("adcValue").innerHTML="<b>" + "ADC : " + str + " V" + "</b>";
+												  str = "";pos+=8;
+												  str += data.charAt(pos);pos++
+												  
+												  if(data.charAt(pos) >= 0 || data.charAt(pos) <= 9){
+												  	str += data.charAt(pos);pos++;
+												  }
+													
+												  if(data.charAt(pos) >= 0 || data.charAt(pos) <= 9){
+												  	str += data.charAt(pos);
+												  }
+												  //alert(str);
+												  document.getElementById("inputPWM").value = str;
+												  document.getElementById("pwmDuty").innerHTML="<b>" + "PWM Duty : " + str + " %" + "</b>";
+												 };
+			});
+		
+		
+			
+			function buttonPWM(){
+  				var pwmDuty = document.getElementById("inputPWM").value;
+				var selectNode=document.getElementById("mySelect").value;
+				//alert(selectNode);
+				var payload = selectNode+' '+pwmDuty;
+ 				//socket.emit('NodePWM',selectNode);
+				//socket.emit('NodePWM',pwmDuty);
+				//alert(payload);
+				socket.emit('NodePWM',payload);
+			}
+			
+			function updateTextInput(val) {
+				//document.getElementById('textInput').value=val;
+				document.getElementById("pwmDuty").innerHTML="<b>" + "PWM Duty : " + val + " %" + "</b>";				
+			}
+		</script>
+		
+		<table style="width:100%">
+  		<tr>
+		<td> 
+		<select id="mySelect" style="width:150px;height:80px;font-size: 16pt" >
+  		<option value="0">Node 100</option>
+  		<option value="1">Node 101</option>
+  		<option value="2">Node 102</option>
+  		<option value="3">Node 103</option>
+		<option value="4">Node 104</option>
+		<option value="5">Node 105</option>
+		</select>
+			
+		</td>
+		<!--
+		<td><font id="adcValue" color="blue"><b> ADC : 0 V</b></font></td>
+		<td><font id="pwmDuty" color="blue"><b> PWM Duty : 0%</b></font></td> 
+		-->
+		<td>		
+		<input type="range" id="inputPWM" name="points" min="0" max="100" value="1" step="1" onchange="updateTextInput(this.value)">		
+		<!--<input id="inputPWM" min="0" max="100" step="1" style="width:50px;height:50px" type="number" value="1">
+		-->
+		<button onclick="buttonPWM()"><font size="4">PWM Duty Set</font></button>		
+		</td>	
+		</tr>
+   		</table>
+		<p></p>
+		<form><textarea rows=14 cols=100 id=TextNode100 style="font-size: 12pt" value=""></textarea></form>
+		
+	</div>
+	<!--  
+	<div id="tab3" class="tabs-panel">
+    </div>
+ 
+	<div id="tab4" class="tabs-panel">
+    </div>
+	 --> 
+	</div>
+
+</div>
+</div>
+
+<script>
+ $(function() {
+   $("#tabs-nav a").click(function() {
+      $("#tabs-nav a").removeClass("tabs-active");
+      $(this).addClass("tabs-active");
+      $(".tabs-panel").hide();
+      var tab_id = $(this).attr("href");
+      $(tab_id).show();
+      return false;
+    });
+ });
+</script>
+
+</body>
+</html>
